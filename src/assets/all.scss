@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap');
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import 'sweetalert2/dist/sweetalert2.min.css';
+@import 'swiper/css';
+@import 'swiper/css/pagination';
+
+@import 'bootstrap/scss/functions';
+@import 'helpers/variables';
+
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/root';
+
+@import 'helpers/utilities';
+@import 'bootstrap/scss/bootstrap';
+
+@import 'base/base';
+@import 'components/buttons';
+@import 'components/card';
+@import 'components/navbar';
+@import 'components/stepper';
+@import 'components/swiper';
+@import 'components/tables';
+@import 'components/tag';
+@import 'utils/hover';
+@import 'utils/link';
+
+@import 'pages/home';
+@import 'pages/login';

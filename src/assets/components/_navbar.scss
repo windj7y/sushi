@@ -1,0 +1,26 @@
+.navbar-nav {
+  .nav-item {
+    margin-top: 24px;
+
+    @include media-breakpoint-up(lg) {
+      margin-top: 0;
+      margin-right: 20px;
+    }
+  }
+
+  .nav-link {
+    padding: 12px;
+
+    &:hover {
+      color: $primary;
+    }
+
+    &.active {
+      color: $primary;
+    }
+
+    @include media-breakpoint-up(lg) {
+      padding: 8px 20px;
+    }
+  }
+}

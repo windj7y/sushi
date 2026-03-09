@@ -1,0 +1,8 @@
+.btn-primary {
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: darken($primary, 6%);
+}

@@ -1,0 +1,21 @@
+body {
+  letter-spacing: 0.1em;
+}
+
+a {
+  display: block;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+ul, ol {
+  margin-bottom: 0;
+}
+
+.bi {
+  transform: translateX(1px);
+}

@@ -1,0 +1,22 @@
+.swiper-wrapper {
+  padding-bottom: 48px;
+}
+
+.swiper-pagination {
+  & > .swiper-pagination-bullet {
+    width: 12px;
+    height: 6px;
+    border-radius: 64px;
+    background: $primary-light;
+    opacity: 1;
+  }
+}
+
+.swiper-pagination-bullet {
+  &.swiper-pagination-bullet-active {
+    width: 36px;
+    height: 6px;
+    border-radius: 64px;
+    background: $primary;
+  }
+}

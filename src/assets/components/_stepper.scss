@@ -1,0 +1,53 @@
+.stepper {
+  padding: 1.5rem 0;
+}
+
+.stepper-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin: 0 auto 0.5rem auto;
+  font-size: 1.2rem;
+
+  &.complete {
+    background-color: $primary;
+    color: $white;
+  }
+
+  &.current {
+    background-color: $primary;
+    color: $white;
+  }
+
+  &.unfinished {
+    border: 2px solid $secondary;
+    color: $secondary;
+  }
+}
+
+.stepper-line {
+  height: 4px;
+  background-color: #ccc;
+  flex-grow: 1;
+  margin: 0 0.5rem;
+  align-self: center;
+}
+
+.stepper-label {
+  font-weight: 600;
+  text-align: center;
+  color: $secondary;
+
+  &.complete,
+  &.current {
+    color: $primary;
+  }
+
+  &.unfinished {
+    color: $secondary;
+  }
+}
