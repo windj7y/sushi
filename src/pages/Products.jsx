@@ -43,10 +43,6 @@ const Products = () => {
   const categoryDef = categories.find((item) => item.slug === categorySlug)?.name || '';
   const [category, setCategory] = useState(categoryDef);
 
-  useEffect(() => {
-    getProducts(1, category);
-  }, [category]);
-
   const getProducts = async (page = 1, category = '') => {
     try {
       const res = await axios.get(`${apiBase}/api/${apiPath}/products?page=${page}&category=${category}`);
@@ -56,6 +52,12 @@ const Products = () => {
       alert('取得產品失敗', 'error', `${error.response.data.message}`);
     }
   }
+
+  useEffect(() => {
+    (async () => {
+      await getProducts(1, category);
+    })();
+  }, [category]);
 
   const addCart = async (id, qty = 1) => {
     const data = {

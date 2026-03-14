@@ -65,18 +65,18 @@ const Home = () => {
   const { alert } = useSweetAlert();
 
   useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await axios.get(`${apiBase}/api/${apiPath}/products/all`);
+        const hot = res.data.products.filter(product => product.badges && product.badges.includes('hot'));
+        setHotProducts(hot);
+      } catch (error) {
+        alert('取得產品失敗', 'error', `${error.response.data.message}`);
+      }
+    }
+    
     getProducts();
   }, []);
-
-  const getProducts = async () => {
-    try {
-      const res = await axios.get(`${apiBase}/api/${apiPath}/products/all`);
-      const hot = res.data.products.filter(product => product.badges && product.badges.includes('hot'));
-      setHotProducts(hot);
-    } catch (error) {
-      alert('取得產品失敗', 'error', `${error.response.data.message}`);
-    }
-  }
 
   const addCart = async (id, qty = 1) => {
     const data = {

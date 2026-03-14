@@ -27,14 +27,6 @@ const Coupons = () => {
   const couponModalRef = useRef(null);
   const showMsg = useMsg();
 
-  useEffect(() => {
-    couponModalRef.current = new Modal(couponModalRef.current, {
-      keyboard: false,
-    });
-
-    getCoupons();
-  }, []);
-
   const getCoupons = async (page = 1) => {
     try {
       const res = await axios.get(`${apiBase}/api/${apiPath}/admin/coupons?page=${page}`);
@@ -44,6 +36,16 @@ const Coupons = () => {
       showMsg(error.response.data);
     }
   }
+
+  useEffect(() => {
+    couponModalRef.current = new Modal(couponModalRef.current, {
+      keyboard: false,
+    });
+    
+    (async () => {
+      await getCoupons();
+    })();
+  }, []);
 
   const openModal = (coupon, type) => {
     setTempCoupon({

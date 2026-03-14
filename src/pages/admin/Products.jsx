@@ -33,12 +33,24 @@ const Products = () => {
   const productModalRef = useRef(null);
   const showMsg = useMsg();
 
+  const getProducts = async (page = 1) => {
+    try {
+      const res = await axios.get(`${apiBase}/api/${apiPath}/admin/products?page=${page}`);
+      setProducts(res.data.products);
+      setPagination(res.data.pagination);
+    } catch (error) {
+      showMsg(error.response.data);
+    }
+  }
+
   useEffect(() => {
     productModalRef.current = new Modal(productModalRef.current, {
       keyboard: false,
     });
     
-    getProducts();
+    (async () => {
+      await getProducts();
+    })();
   }, []);
 
   const openModal = (product, type) => {
@@ -62,16 +74,6 @@ const Products = () => {
 
   const closeModal = () => {
     productModalRef.current.hide();
-  }
-
-  const getProducts = async (page = 1) => {
-    try {
-      const res = await axios.get(`${apiBase}/api/${apiPath}/admin/products?page=${page}`);
-      setProducts(res.data.products);
-      setPagination(res.data.pagination);
-    } catch (error) {
-      showMsg(error.response.data);
-    }
   }
 
   return (<>

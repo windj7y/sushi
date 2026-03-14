@@ -29,28 +29,28 @@ const Product = () => {
   const { alert } = useSweetAlert();
 
   useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const res = await axios.get(`${apiBase}/api/${apiPath}/product/${id}`);
+        setProduct(res.data.product);
+        getProducts(res.data.product.category);
+      } catch (error) {
+        alert('取得產品失敗', 'error', `${error.response.data.message}`);
+      }
+    }
+
+    const getProducts = async (category = '') => {
+      try {
+        const res = await axios.get(`${apiBase}/api/${apiPath}/products?category=${category}`);
+        const productData = res.data.products.filter((product) => product.id !== id);
+        setProducts(productData);
+      } catch (error) {
+        alert('取得產品失敗', 'error', `${error.response.data.message}`);
+      }
+    }
+
     getProduct();
   }, [id]);
-
-  const getProduct = async () => {
-    try {
-      const res = await axios.get(`${apiBase}/api/${apiPath}/product/${id}`);
-      setProduct(res.data.product);
-      getProducts(res.data.product.category);
-    } catch (error) {
-      alert('取得產品失敗', 'error', `${error.response.data.message}`);
-    }
-  }
-
-  const getProducts = async (category = '') => {
-    try {
-      const res = await axios.get(`${apiBase}/api/${apiPath}/products?category=${category}`);
-      const productData = res.data.products.filter((product) => product.id !== id);
-      setProducts(productData);
-    } catch (error) {
-      alert('取得產品失敗', 'error', `${error.response.data.message}`);
-    }
-  }
 
   const addCart = async (product_id) => {
     const data = {

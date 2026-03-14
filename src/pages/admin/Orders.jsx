@@ -25,14 +25,6 @@ const Orders = () => {
   const showMsg = useMsg();
   const { confirm } = useSweetAlert();
 
-  useEffect(() => {
-    orderModalRef.current = new Modal(orderModalRef.current, {
-      keyboard: false,
-    });
-
-    getOrders();
-  }, []);
-
   const getOrders = async (page = 1) => {
     try {
       const res = await axios.get(`${apiBase}/api/${apiPath}/admin/orders?page=${page}`);
@@ -42,6 +34,16 @@ const Orders = () => {
       showMsg(error.response.data);
     }
   }
+
+  useEffect(() => {
+    orderModalRef.current = new Modal(orderModalRef.current, {
+      keyboard: false,
+    });
+    
+    (async () => {
+      await getOrders();
+    })();
+  }, []);
 
   const updatePaid = async (id) => {
     const oldOrder = orders.find(order => order.id === id);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import useMsg from "../hooks/useMsg";
@@ -7,6 +7,10 @@ import useMsg from "../hooks/useMsg";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 const Login = () => {
+  const [auth, setAuth] = useState({
+    token: null,
+    expired: null
+  });
   const navigate = useNavigate();
   const showMsg = useMsg();
 
@@ -19,9 +23,8 @@ const Login = () => {
   const handleLogin = async (data) => {
     try {
       const res = await axios.post(`${apiBase}/admin/signin`, data);
-      const { expired, token } = res.data;
-      document.cookie = `hexToken=${token}; expires=${new Date(expired)};`;
-      axios.defaults.headers.common['Authorization'] = token;
+      const { token, expired } = res.data;
+      setAuth({ token, expired });
       showMsg(res.data);
       navigate('/admin/products');
     } catch (error) {
@@ -30,16 +33,19 @@ const Login = () => {
   };
 
   useEffect(() => {
-    const token = document.cookie.replace(
+    const cookieToken = document.cookie.replace(
       /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
 
-    if (token) {
-      axios.defaults.headers.common.Authorization = token;
+    if (auth.token) {
+      document.cookie = `hexToken=${auth.token}; expires=${new Date(auth.expired)};`;
+      axios.defaults.headers.common['Authorization'] = auth.token;
+    } else if (cookieToken) {
+      axios.defaults.headers.common['Authorization'] = cookieToken;
       navigate('/admin/products');
     }
-  }, []);
+  }, [auth, navigate]);
 
   return (<>
     <div className="login">
