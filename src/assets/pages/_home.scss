@@ -7,7 +7,7 @@
   position: relative;
 
   @include media-breakpoint-up(md) {
-    background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/wind-api/1772527908095.jpg');
+    background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/wind-api/1774129503410.jpg');
   }
 }
 
@@ -19,10 +19,11 @@
 }
 
 .category {
-  transition: transform .3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
     transform: translateY(-4px);
+    box-shadow: 0 2px 4px rgba($black, 0.06);
   }
 }
 

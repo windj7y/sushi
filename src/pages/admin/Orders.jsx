@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Modal } from 'bootstrap';
 import { money } from '../../filter/money';
 import useMsg from '../../hooks/useMsg';
@@ -25,7 +25,7 @@ const Orders = () => {
   const showMsg = useMsg();
   const { confirm } = useSweetAlert();
 
-  const getOrders = async (page = 1) => {
+  const getOrders = useCallback(async (page = 1) => {
     try {
       const res = await axios.get(`${apiBase}/api/${apiPath}/admin/orders?page=${page}`);
       setOrders(res.data.orders);
@@ -33,16 +33,19 @@ const Orders = () => {
     } catch (error) {
       showMsg(error.response.data);
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await getOrders();
+    })();
+  }, [getOrders]);
 
   useEffect(() => {
     orderModalRef.current = new Modal(orderModalRef.current, {
       keyboard: false,
     });
-    
-    (async () => {
-      await getOrders();
-    })();
   }, []);
 
   const updatePaid = async (id) => {

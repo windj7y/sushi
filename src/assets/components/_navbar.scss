@@ -24,3 +24,11 @@
     }
   }
 }
+
+.navbar {
+  transition: box-shadow 0.3s ease;
+
+  &.navbar-scrolled {
+    box-shadow: 0 2px 6px rgba(100, 90, 80, 0.08);
+  }
+}

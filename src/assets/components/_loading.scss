@@ -1,0 +1,30 @@
+.loading {
+  &-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba($white, 0.85);
+    z-index: 9999;
+  }
+
+  &-img {
+    width: 120px;
+    height: 94px;
+    margin-bottom: 16px;
+    animation: pulse 1s ease-in-out infinite;
+  }
+
+  &-text {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ff5a6b;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}

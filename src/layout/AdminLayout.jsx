@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router";
 import useMsg from "../hooks/useMsg";
 
@@ -11,6 +11,12 @@ const AdminLayout = () => {
 
   const navigate = useNavigate();
   const showMsg = useMsg();
+
+  const handleClearAuth = useCallback(() => {
+    document.cookie = `hexToken=; Max-Age=0; path=${basePath};`;
+    delete axios.defaults.headers.common['Authorization'];
+    navigate('/login');
+  }, [navigate]);
 
   useEffect(() => {
     const token = document.cookie.replace(
@@ -24,17 +30,19 @@ const AdminLayout = () => {
     }
 
     axios.defaults.headers.common.Authorization = token;
-    checkLogin();
-  }, [navigate]);
 
-  const checkLogin = async () => {
-    try {
-      await axios.post(`${apiBase}/api/user/check`);
-    } catch (error) {
-      showMsg(error.response.data);
-      handleClearAuth();
-    }
-  };
+    const checkLogin = async () => {
+      try {
+        await axios.post(`${apiBase}/api/user/check`);
+      } catch (error) {
+        showMsg(error.response.data);
+        handleClearAuth();
+      }
+    };
+
+    checkLogin();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, handleClearAuth]);
 
   const handleLogout = async () => {
     try {
@@ -45,12 +53,6 @@ const AdminLayout = () => {
     } finally {
       handleClearAuth();
     }
-  };
-
-  const handleClearAuth = () => {
-    document.cookie = `hexToken=; Max-Age=0; path=${basePath};`;
-    delete axios.defaults.headers.common['Authorization'];
-    navigate('/login');
   };
 
   return (<>

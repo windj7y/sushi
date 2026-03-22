@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Modal } from 'bootstrap';
 import { money } from '../../filter/money';
 import useMsg from '../../hooks/useMsg';
@@ -33,7 +33,7 @@ const Products = () => {
   const productModalRef = useRef(null);
   const showMsg = useMsg();
 
-  const getProducts = async (page = 1) => {
+  const getProducts = useCallback(async (page = 1) => {
     try {
       const res = await axios.get(`${apiBase}/api/${apiPath}/admin/products?page=${page}`);
       setProducts(res.data.products);
@@ -41,16 +41,19 @@ const Products = () => {
     } catch (error) {
       showMsg(error.response.data);
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await getProducts();
+    })();
+  }, [getProducts]);
 
   useEffect(() => {
     productModalRef.current = new Modal(productModalRef.current, {
       keyboard: false,
     });
-    
-    (async () => {
-      await getProducts();
-    })();
   }, []);
 
   const openModal = (product, type) => {

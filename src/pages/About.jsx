@@ -1,7 +1,7 @@
 const About = () => {
   return (<>
     <section className="position-relative">
-      <img src="https://storage.googleapis.com/vue-course-api.appspot.com/wind-api/1772827038079.jpg" className="w-100 h-450 object-fit-cover" alt="about-banner" />
+      <img src="https://storage.googleapis.com/vue-course-api.appspot.com/wind-api/1774129546811.jpg" className="w-100 h-450 object-fit-cover" alt="about-banner" />
       <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-25"></div>
       <div className="position-absolute top-50 start-50 translate-middle text-white text-center ls-sm">
         <h2 className="fs-2 fs-md-1">關於我們</h2>

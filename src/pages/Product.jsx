@@ -7,21 +7,19 @@ import { Link, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { addCartAsync } from "../slices/cartSlice";
 
+import { badgeLabel } from '../data/badges';
 import { money } from '../filter/money';
 import useSweetAlert from "../hooks/useSweetAlert";
+
+import FullPageLoading from '../components/FullPageLoading';
 
 const apiBase = import.meta.env.VITE_API_BASE;
 const apiPath = import.meta.env.VITE_API_PATH;
 
-const badgeLabel = {
-  hot: '🔥熱門商品',
-  chef: '👨‍🍳主廚推薦',
-  new: '✨新品上市'
-};
-
 const Product = () => {
   const [product, setProduct] = useState({});
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
   const loadingItem = useSelector(state => state.cart.loadingItem);
@@ -31,11 +29,14 @@ const Product = () => {
   useEffect(() => {
     const getProduct = async () => {
       try {
+        setLoading(true);
         const res = await axios.get(`${apiBase}/api/${apiPath}/product/${id}`);
         setProduct(res.data.product);
         getProducts(res.data.product.category);
       } catch (error) {
         alert('取得產品失敗', 'error', `${error.response.data.message}`);
+      } finally {
+        setTimeout(() => setLoading(false), 500);
       }
     }
 
@@ -50,6 +51,7 @@ const Product = () => {
     }
 
     getProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const addCart = async (product_id) => {
@@ -67,7 +69,9 @@ const Product = () => {
   }
 
   return (<>
-    <section className="container py-11 py-lg-13 border-top border-secondary-subtle">
+    <FullPageLoading loading={loading} />
+
+    <section className="container pt-4 pb-11 pb-lg-13">
     {
       product ? (<>
         <span className="badge bg-secondary mb-2">{ product.category }</span>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { addCartAsync } from "../slices/cartSlice";
@@ -8,6 +8,7 @@ import { money } from '../filter/money';
 import useSweetAlert from "../hooks/useSweetAlert";
 
 import Pagination from '../components/Pagination';
+import FullPageLoading from '../components/FullPageLoading';
 
 const apiBase = import.meta.env.VITE_API_BASE;
 const apiPath = import.meta.env.VITE_API_PATH;
@@ -34,6 +35,7 @@ const categories = [
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const loadingItem = useSelector(state => state.cart.loadingItem);
   const dispatch = useDispatch();
@@ -43,21 +45,25 @@ const Products = () => {
   const categoryDef = categories.find((item) => item.slug === categorySlug)?.name || '';
   const [category, setCategory] = useState(categoryDef);
 
-  const getProducts = async (page = 1, category = '') => {
+  const getProducts = useCallback(async (page = 1, category = '') => {
     try {
+      setLoading(true);
       const res = await axios.get(`${apiBase}/api/${apiPath}/products?page=${page}&category=${category}`);
       setProducts(res.data.products);
       setPagination(res.data.pagination);
     } catch (error) {
       alert('取得產品失敗', 'error', `${error.response.data.message}`);
+    } finally {
+      setTimeout(() => setLoading(false), 500);
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     (async () => {
       await getProducts(1, category);
     })();
-  }, [category]);
+  }, [category, getProducts]);
 
   const addCart = async (id, qty = 1) => {
     const data = {
@@ -78,9 +84,11 @@ const Products = () => {
   };
 
   return (<>
+    <FullPageLoading loading={loading} />
+    
     <section className="container-lg px-0 px-lg-3">
       <div className="position-relative">
-        <img src="https://storage.googleapis.com/vue-course-api.appspot.com/wind-api/1772779435968.jpg" className="w-100 h-450 object-fit-cover" alt="product-banner" />
+        <img src="https://storage.googleapis.com/vue-course-api.appspot.com/wind-api/1774129532721.jpg" className="w-100 h-450 object-fit-cover" alt="product-banner" />
         <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
         <div className="position-absolute top-50 start-50 translate-middle text-white text-center ls-sm">
           <h2 className="fs-2 fs-md-1 fw">商品專區</h2>

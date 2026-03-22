@@ -8,6 +8,7 @@ import ScrollToTop from "../components/ScrollToTop";
 
 const Layout = () => {
   const [navOpen, setNavOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const carts = useSelector(state => state.cart.carts);
   const dispatch = useDispatch();
@@ -23,12 +24,22 @@ const Layout = () => {
     }
 
     getCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (<>
     <ScrollToTop />
 
-    <nav className="navbar navbar-expand-lg bg-transparent">
+    <nav className={`navbar navbar-expand-lg bg-light sticky-top ${scrolled ? 'navbar-scrolled' : ''}`}>
       <div className="container">
         <NavLink className="navbar-brand fw-medium fs-3 ls-sm" to="/" onClick={() => setNavOpen(false)}>sushi</NavLink>
         <button className="navbar-toggler" type="button" onClick={() => setNavOpen(!navOpen)} aria-expanded={navOpen} aria-label="Toggle navigation">

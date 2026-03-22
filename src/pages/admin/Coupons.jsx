@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Modal } from 'bootstrap';
 import useMsg from '../../hooks/useMsg';
 import dayjs from 'dayjs';
@@ -27,7 +27,7 @@ const Coupons = () => {
   const couponModalRef = useRef(null);
   const showMsg = useMsg();
 
-  const getCoupons = async (page = 1) => {
+  const getCoupons = useCallback(async (page = 1) => {
     try {
       const res = await axios.get(`${apiBase}/api/${apiPath}/admin/coupons?page=${page}`);
       setCoupons(res.data.coupons);
@@ -35,16 +35,19 @@ const Coupons = () => {
     } catch (error) {
       showMsg(error.response.data);
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await getCoupons();
+    })();
+  }, [getCoupons]);
 
   useEffect(() => {
     couponModalRef.current = new Modal(couponModalRef.current, {
       keyboard: false,
     });
-    
-    (async () => {
-      await getCoupons();
-    })();
   }, []);
 
   const openModal = (coupon, type) => {

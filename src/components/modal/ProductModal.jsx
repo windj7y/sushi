@@ -1,16 +1,10 @@
 import axios from 'axios';
 import { useRef } from "react";
+import { badges, badgeLabel } from '../../data/badges';
 import useMsg from '../../hooks/useMsg';
 
 const apiBase = import.meta.env.VITE_API_BASE;
 const apiPath = import.meta.env.VITE_API_PATH;
-
-const badges = ['hot', 'chef', 'new'];
-const badgeLabel = {
-  hot: '熱門商品',
-  chef: '主廚推薦',
-  new: '新品上市'
-};
 
 const ProductModal = ({ productModalRef, tempProduct, setTempProduct, type, getProducts, closeModal }) => {
   const fileRef = useRef(null);
